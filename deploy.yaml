@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ljubaapp
+  name: ljubaapp
+  namespace: ljuba-k8s1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ljubaapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ljubaapp
+    spec:
+      containers:
+      - image: ljubamob/k8s-test:appv1
+        name: k8s-test
+        ports:
+        - containerPort: 80
+        resources: {}
+        imagePullPolicy: Always
+status: {}
+
+
+## adding service with nodeport
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ljubsvc1
+  name: ljubsvc1
+  namespace: ljuba-k8s1
+spec:
+  ports:
+  - name: 1111-80
+    port: 1111
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: ljubaapp
+  type: NodePort
+status:
+  loadBalancer: {}
